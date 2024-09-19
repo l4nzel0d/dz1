@@ -1,0 +1,13 @@
+{
+    "folder1": 
+    {
+        "file2.txt": "-", 
+        "folder1.1": {}, 
+        "folder1.2": 
+        {
+            "file3.txt": "-"
+        }
+    }, 
+    "folder2": {},
+    "file1.txt": "-"
+}
