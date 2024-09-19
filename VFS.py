@@ -14,7 +14,6 @@ class VFS:
     def load_zip(self):
         with zipfile.ZipFile(self.zip_path, 'r') as z:
             for obj_path in z.namelist(): # here obj_path is a path to either a file or directory
-                print(obj_path)
                 
                 parts = obj_path.strip('/').split('/')
                 current_level = self.file_structure
@@ -24,42 +23,41 @@ class VFS:
                         current_level[part] = "f"
                     else:
                         current_level = current_level.setdefault(part, {})
-        print(self.file_structure)
 
-    def cd(self, path):
-        # root
-        if path == "/":
-            self.current_dir = path
-            return 
-        
-        
-        # parent directory
-        if path[0:2] == "..":
-            if self.current_dir == '/':
-                return
-            
-            parts = self.current_dir.strip('/').split('/')[:-1]
-            directory = '/'
-            for part in parts:
-                directory += part + '/'
-            self.current_dir = directory
-            return
-        
-        # absolute or relative path
-        if path[0] == '/': 
+    def cd(self, path): 
+        parsed_path = self.path_parser(path)
+        if self.get_dictionary_from_absolute_path(parsed_path) is None:
+            print(f"shell.py: cd: {path}: no such directory")
+        else:
+            self.current_dir = parsed_path
+
+    def path_parser(self, path):
+        if path.startswith("/"):
             abs_path = path
         else:
-            abs_path = self.current_dir + path 
+            abs_path = self.current_dir + path
+        
+        parts = abs_path.split('/')
 
-        # ensure directory ends with a slash
-        if abs_path[-1] != '/':
-            abs_path += '/'
+        final_parts = []
 
-        if self.get_dictionary_from_absolute_path(abs_path) == None:
-            print(f"{abs_path}: No such directory")
-        else: 
-            self.current_dir = abs_path
-        return
+        for part in parts:
+            if part == '' or part == '.':
+                continue
+            elif part == "..":
+                if final_parts:
+                    final_parts.pop()
+            else:
+                final_parts.append(part)
+        
+        final_path = '/' + '/'.join(final_parts) + '/'
+
+        final_path = final_path.replace('//', '/')
+        if final_path == '':
+            final_path = '/'
+        
+        return final_path
+
         
 
     def get_dictionary_from_absolute_path(self, path):
@@ -79,7 +77,17 @@ class VFS:
     def pwd(self):
         print(self.current_dir)
     
+    
+    def ls(self, path=None):
+        if (path == None):
+            path = self.current_dir
 
+        parsed_path = self.path_parser(path)
+        directory_dict = self.get_dictionary_from_absolute_path(parsed_path)
+        if directory_dict is None:
+            print(f"shell.py: ls: {path}: no such directory")
+        else:
+            print("\t\t".join([keys for keys in directory_dict]))
 
     def uptime(self):
         uptime_duration = time.time() - self.start_time

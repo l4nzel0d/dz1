@@ -1,6 +1,17 @@
 import argparse
 from VFS import VFS
 
+def help_text():
+    return """
+Available commands:
+- **`cd <path>`**: Change the current directory to `<path>`.
+- **`ls [directory]`**: List the contents of the specified directory, or the current directory if no directory is provided.
+- **`pwd`**: Print the current working directory.
+- **`uptime`**: Show the amount of time the shell has been running.
+- **`exit`**: Terminate the shell session and return control to the terminal.
+- **`help`**: Display this help text with a summary of all available commands.
+"""
+
 def shell(vfs):
     while True:
         line = input(f"{vfs.current_dir}$ ").strip()
@@ -24,7 +35,7 @@ def shell(vfs):
             if len(args) == 1:
                 vfs.cd(args[0])
             else:
-                print("Usage: cd path")
+                print("Usage: cd <path>")
         
         elif command == "ls":
             if len(args) == 1:
@@ -38,6 +49,9 @@ def shell(vfs):
                 print("Examples:")
                 print("  ls            # List contents of the current directory")
                 print("  ls folder1    # List contents of 'folder1' directory")
+
+        elif command == "help":
+            print(help_text())
 
         else:
             print("Unknown command")
