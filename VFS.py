@@ -75,20 +75,15 @@ class VFS:
         return current_level
 
     def pwd(self):
-        print(self.current_dir)
+        return self.current_dir
     
     
-    def ls(self, path=None):
-        if (path == None):
-            path = self.current_dir
-
+    def ls(self, path="."):
         parsed_path = self.path_parser(path)
         directory_dict = self.get_dictionary_from_absolute_path(parsed_path)
-        if directory_dict is None:
-            print(f"shell.py: ls: {path}: no such directory")
-        else:
-            print("\t\t".join([keys for keys in directory_dict]))
+        return path, directory_dict
+
 
     def uptime(self):
         uptime_duration = time.time() - self.start_time
-        print(f"Uptime: {uptime_duration:.2f} seconds")
+        return uptime_duration

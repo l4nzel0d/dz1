@@ -18,6 +18,7 @@ This project provides a shell emulator that interacts with a virtual file system
 - `VFS.py`: Contains the `VFS` class, which handles the virtual file system operations.
 - `example_root.zip`: A zip archive containing the virtual file system structure.
 - `example_root/`: A folder with the same contents as `example_root.zip`, used for testing and comparison.
+- `test_vfs.py`: Contains unit tests for the `VFS` class using the unittest framework.
 
 ## Installation
 
