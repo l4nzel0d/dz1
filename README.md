@@ -28,16 +28,21 @@ This project provides a shell emulator that interacts with a virtual file system
    cd dz1
    ```
 
-## How to test
+## How to use
 
-**Run this command in your terminal**:
+**To launch**:
    ```bash
    python shell.py example_root.zip 
    ```
-**Run this command in emulator command-line**:
+**To get help**:
    ```bash
    /$ help
    ```
+
+**To test using unittest**:
+```bash
+python -m unittest test_vfs.py
+```
 
 ## Author
 ---
